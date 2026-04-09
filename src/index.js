@@ -884,7 +884,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
         const output = await watermarkPdf({
           pdfBytes,
-          textLines: ["!YSL", "!BKING"],
+          textLines: ["! YSL", "! BKING"],
           overlayAssets
         });
 

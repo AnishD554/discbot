@@ -30,8 +30,8 @@ function drawTiledText(page, {
   yOffset = 0
 }) {
   const textWidth = font.widthOfTextAtSize(line, size);
-  const stepX = Math.max(textWidth + 120, width / 1.95);
-  const stepY = Math.max(size * 4.2, height / 2.9);
+  const stepX = Math.max(textWidth + 72, width / 2.05);
+  const stepY = Math.max(size * 2.9, height / 3.0);
 
   for (let x = -width * 0.25 + xOffset; x < width * 1.15; x += stepX) {
     for (let y = -height * 0.15 + yOffset; y < height * 1.15; y += stepY) {
@@ -67,7 +67,7 @@ export async function watermarkPdf({
   for (const page of pdfDoc.getPages()) {
     const { width, height } = page.getSize();
 
-    const tiledSize = clamp(Math.min(width, height) / 12.5, 16, 28);
+    const tiledSize = clamp(Math.min(width, height) / 11.2, 20, 32);
 
     for (let i = 0; i < textLines.length; i += 1) {
       const line = textLines[i];
@@ -80,18 +80,18 @@ export async function watermarkPdf({
         line,
         size: tiledSize,
         rotation: -32,
-        opacity: i === 0 ? 0.1 : 0.085,
-        color: rgb(0.14, 0.14, 0.14),
-        xOffset: i * (tiledSize * 4.2),
-        yOffset: i * (tiledSize * 2.6)
+        opacity: i === 0 ? 0.22 : 0.19,
+        color: rgb(0.18, 0.18, 0.18),
+        xOffset: i * (tiledSize * 2.2),
+        yOffset: i * (tiledSize * 1.5)
       });
     }
 
     if (embeddedOverlays[0]) {
       const overlay = embeddedOverlays[0];
       const dims = overlay.image.scale(1);
-      const maxWidth = width * 0.88;
-      const maxHeight = height * 0.84;
+      const maxWidth = width * 0.97;
+      const maxHeight = height * 0.92;
       const scale = Math.min(maxWidth / dims.width, maxHeight / dims.height);
       const drawWidth = dims.width * scale;
       const drawHeight = dims.height * scale;
@@ -101,7 +101,7 @@ export async function watermarkPdf({
         y: (height - drawHeight) / 2,
         width: drawWidth,
         height: drawHeight,
-        opacity: 0.28
+        opacity: 0.44
       });
     }
   }

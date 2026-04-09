@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "main": "index.js",
   "description": "Discord bot for quoting USD prices in crypto, watching chain payments, and recording paid users.",
   "scripts": {
     "start": "node src/index.js",
