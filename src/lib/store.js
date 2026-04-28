@@ -14,8 +14,14 @@ const DEFAULT_STORE = {
   invoices: [],
   paidUsers: [],
   exams: [],
+  ticketMenuItems: [],
   tickets: []
 };
+
+function normalizeExam(entry) {
+  if (typeof entry === "string") return { name: entry, brand: "YSL" };
+  return entry;
+}
 
 function cloneDefaultStore() {
   return JSON.parse(JSON.stringify(DEFAULT_STORE));
@@ -165,36 +171,81 @@ export class JsonStore {
   }
 
   getExams() {
-    return [...this.data.exams].sort((a, b) => a.localeCompare(b));
+    return [...this.data.exams]
+      .map(normalizeExam)
+      .map((e) => e.name)
+      .sort((a, b) => a.localeCompare(b));
   }
 
-  addExam(name) {
+  getExamsWithBrand() {
+    return [...this.data.exams]
+      .map(normalizeExam)
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  getExamBrand(name) {
+    const entry = this.data.exams
+      .map(normalizeExam)
+      .find((e) => e.name.toLowerCase() === name.trim().toLowerCase());
+    return entry?.brand ?? "YSL";
+  }
+
+  addExam(name, brand = "YSL") {
     const normalized = name.trim();
     if (!normalized) {
       return false;
     }
 
-    const exists = this.data.exams.some(
-      (entry) => entry.toLowerCase() === normalized.toLowerCase()
-    );
+    const exists = this.data.exams
+      .map(normalizeExam)
+      .some((e) => e.name.toLowerCase() === normalized.toLowerCase());
     if (exists) {
       return false;
     }
 
-    this.data.exams.push(normalized);
+    this.data.exams.push({ name: normalized, brand });
     this.persist();
     return true;
   }
 
   removeExam(name) {
-    const index = this.data.exams.findIndex(
-      (entry) => entry.toLowerCase() === name.trim().toLowerCase()
-    );
+    const normalized = name.trim().toLowerCase();
+    const index = this.data.exams
+      .map(normalizeExam)
+      .findIndex((e) => e.name.toLowerCase() === normalized);
     if (index === -1) {
       return false;
     }
 
     this.data.exams.splice(index, 1);
+    this.persist();
+    return true;
+  }
+
+  getTicketMenuItems() {
+    return [...(this.data.ticketMenuItems ?? [])].sort((a, b) => a.localeCompare(b));
+  }
+
+  addTicketMenuItem(name) {
+    if (!this.data.ticketMenuItems) this.data.ticketMenuItems = [];
+    const normalized = name.trim();
+    if (!normalized) return false;
+    const exists = this.data.ticketMenuItems.some(
+      (e) => e.toLowerCase() === normalized.toLowerCase()
+    );
+    if (exists) return false;
+    this.data.ticketMenuItems.push(normalized);
+    this.persist();
+    return true;
+  }
+
+  removeTicketMenuItem(name) {
+    if (!this.data.ticketMenuItems) { this.data.ticketMenuItems = []; return false; }
+    const index = this.data.ticketMenuItems.findIndex(
+      (e) => e.toLowerCase() === name.trim().toLowerCase()
+    );
+    if (index === -1) return false;
+    this.data.ticketMenuItems.splice(index, 1);
     this.persist();
     return true;
   }

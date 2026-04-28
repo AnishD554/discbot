@@ -117,6 +117,7 @@ function updatePendingQuote(method, methodConfig, usdAmount, quotes) {
 async function createInvoiceForInteraction(interaction) {
   const quotes = await fetchUsdQuotes(config);
   const exam = interaction.options.getString("exam", true);
+  const brand = store.getExamBrand(exam);
   const customer = interaction.options.getUser("customer", true);
   const invoice = buildInvoice({
     config,
@@ -125,6 +126,7 @@ async function createInvoiceForInteraction(interaction) {
     guildId: interaction.guildId,
     usdAmount: interaction.options.getNumber("amount", true),
     exam,
+    brand,
     note: interaction.options.getString("note"),
     quotes
   });
@@ -537,9 +539,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
         if (subcommand === "add") {
           const name = interaction.options.getString("name", true);
-          const added = store.addExam(name);
+          const brand = interaction.options.getString("brand") ?? "YSL";
+          const added = store.addExam(name, brand);
           await interaction.reply({
-            content: added ? `Added exam: ${name}` : "That exam already exists or was invalid.",
+            content: added ? `Added exam: ${name} (${brand})` : "That exam already exists or was invalid.",
             ephemeral: true
           });
           return;
@@ -556,9 +559,11 @@ client.on(Events.InteractionCreate, async (interaction) => {
         }
 
         if (subcommand === "list") {
-          const exams = store.getExams();
+          const exams = store.getExamsWithBrand();
           await interaction.reply({
-            content: exams.length > 0 ? exams.join("\n") : "No exams configured yet.",
+            content: exams.length > 0
+              ? exams.map((e) => `${e.name} [${e.brand}]`).join("\n")
+              : "No exams configured yet.",
             ephemeral: true
           });
           return;
@@ -717,6 +722,56 @@ client.on(Events.InteractionCreate, async (interaction) => {
         const description = interaction.options.getString("description") ?? undefined;
         await interaction.reply(buildTicketPanelPayload({ title, description }));
         return;
+      }
+
+      if (interaction.commandName === "ticketmenu") {
+        if (!isAllowedUser(interaction.user.id)) {
+          await interaction.reply({
+            content: "You are not allowed to use this bot.",
+            ephemeral: true
+          });
+          return;
+        }
+
+        const member = await interaction.guild.members.fetch(interaction.user.id).catch(() => null);
+        if (!member?.permissions.has(PermissionFlagsBits.ManageGuild)) {
+          await interaction.reply({
+            content: "You need Manage Server to update the ticket menu.",
+            ephemeral: true
+          });
+          return;
+        }
+
+        const subcommand = interaction.options.getSubcommand();
+
+        if (subcommand === "add") {
+          const name = interaction.options.getString("name", true);
+          const added = store.addTicketMenuItem(name);
+          await interaction.reply({
+            content: added ? `Added to ticket menu: ${name}` : "That item already exists or was invalid.",
+            ephemeral: true
+          });
+          return;
+        }
+
+        if (subcommand === "remove") {
+          const name = interaction.options.getString("name", true);
+          const removed = store.removeTicketMenuItem(name);
+          await interaction.reply({
+            content: removed ? `Removed from ticket menu: ${name}` : "That item was not found.",
+            ephemeral: true
+          });
+          return;
+        }
+
+        if (subcommand === "list") {
+          const items = store.getTicketMenuItems();
+          await interaction.reply({
+            content: items.length > 0 ? items.join("\n") : "No ticket menu items configured yet.",
+            ephemeral: true
+          });
+          return;
+        }
       }
 
       if (interaction.commandName === "ticket-add") {
@@ -921,16 +976,16 @@ client.on(Events.InteractionCreate, async (interaction) => {
             return;
           }
 
-          const exams = store.getExams();
-          if (exams.length === 0) {
+          const ticketItems = store.getTicketMenuItems();
+          if (ticketItems.length === 0) {
             await interaction.reply({
-              content: "No exams are configured yet. Add exams with `/exams add` first.",
+              content: "No ticket menu items configured yet. Add items with `/ticketmenu add` first.",
               ephemeral: true
             });
             return;
           }
 
-          await interaction.reply(buildTicketExamPromptPayload(exams));
+          await interaction.reply(buildTicketExamPromptPayload(ticketItems));
           return;
         }
 

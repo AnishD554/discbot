@@ -2,8 +2,10 @@ import "dotenv/config";
 import path from "node:path";
 
 const DEFAULT_METHODS = [
+  // ── YSL ──────────────────────────────────────────────────────────────────
   {
     id: "btc",
+    brand: "YSL",
     buttonLabel: "₿ BTC",
     paymentTitle: "₿ Bitcoin Payment",
     network: "Bitcoin",
@@ -20,6 +22,7 @@ const DEFAULT_METHODS = [
   },
   {
     id: "eth",
+    brand: "YSL",
     buttonLabel: "Ξ ETH",
     paymentTitle: "Ξ Ethereum Payment",
     network: "Ethereum",
@@ -35,6 +38,7 @@ const DEFAULT_METHODS = [
   },
   {
     id: "base",
+    brand: "YSL",
     buttonLabel: "Base ETH",
     paymentTitle: "Base Payment",
     network: "Base",
@@ -50,6 +54,7 @@ const DEFAULT_METHODS = [
   },
   {
     id: "polygon",
+    brand: "YSL",
     buttonLabel: "POL",
     paymentTitle: "Polygon Payment",
     network: "Polygon",
@@ -65,6 +70,7 @@ const DEFAULT_METHODS = [
   },
   {
     id: "monad",
+    brand: "YSL",
     buttonLabel: "MONAD",
     paymentTitle: "Monad Payment",
     network: "Monad",
@@ -78,6 +84,7 @@ const DEFAULT_METHODS = [
   },
   {
     id: "sol",
+    brand: "YSL",
     buttonLabel: "◎ SOL",
     paymentTitle: "◎ Solana Payment",
     network: "Solana",
@@ -92,6 +99,7 @@ const DEFAULT_METHODS = [
   },
   {
     id: "usdt-erc20",
+    brand: "YSL",
     buttonLabel: "₮ USDT (ERC-20)",
     paymentTitle: "₮ USDT Payment",
     network: "Ethereum ERC-20",
@@ -108,6 +116,7 @@ const DEFAULT_METHODS = [
   },
   {
     id: "usdc-sol",
+    brand: "YSL",
     buttonLabel: "$ USDC (SOL)",
     paymentTitle: "$ USDC Payment",
     network: "Solana SPL",
@@ -123,6 +132,7 @@ const DEFAULT_METHODS = [
   },
   {
     id: "sui",
+    brand: "YSL",
     buttonLabel: "SUI",
     paymentTitle: "Sui Payment",
     network: "Sui",
@@ -134,6 +144,134 @@ const DEFAULT_METHODS = [
     addressSource: "fixed",
     address: "0xe6e695836611dba60da1a62bb31560c8f293fddcc56dfc4a24d6cb5cd59e959b",
     rpcUrl: "https://fullnode.mainnet.sui.io:443"
+  },
+  // ── SORE ─────────────────────────────────────────────────────────────────
+  {
+    id: "btc-sore",
+    brand: "SORE",
+    buttonLabel: "₿ BTC",
+    paymentTitle: "₿ Bitcoin Payment",
+    network: "Bitcoin",
+    symbol: "BTC",
+    coingeckoId: "bitcoin",
+    quoteDecimals: 8,
+    decimals: 8,
+    watcherType: "bitcoin_api",
+    addressSource: "fixed",
+    address: "bc1qpvw88qgw56nm7hcucee6rqml5g8egvnqj9m789",
+    bitcoinNetwork: "mainnet",
+    apiBaseUrl: "https://blockstream.info/api",
+    confirmations: 1
+  },
+  {
+    id: "eth-sore",
+    brand: "SORE",
+    buttonLabel: "Ξ ETH",
+    paymentTitle: "Ξ Ethereum Payment",
+    network: "Ethereum",
+    symbol: "ETH",
+    coingeckoId: "ethereum",
+    quoteDecimals: 8,
+    decimals: 18,
+    watcherType: "evm_native",
+    addressSource: "fixed",
+    address: "0xD4DAc67C78f3629B004140562A480C5839C57105",
+    rpcUrl: "https://ethereum-rpc.publicnode.com",
+    confirmations: 2
+  },
+  {
+    id: "base-sore",
+    brand: "SORE",
+    buttonLabel: "Base ETH",
+    paymentTitle: "Base Payment",
+    network: "Base",
+    symbol: "ETH",
+    coingeckoId: "ethereum",
+    quoteDecimals: 8,
+    decimals: 18,
+    watcherType: "evm_native",
+    addressSource: "fixed",
+    address: "0xD4DAc67C78f3629B004140562A480C5839C57105",
+    rpcUrl: "https://mainnet.base.org",
+    confirmations: 2
+  },
+  {
+    id: "polygon-sore",
+    brand: "SORE",
+    buttonLabel: "POL",
+    paymentTitle: "Polygon Payment",
+    network: "Polygon",
+    symbol: "POL",
+    coingeckoId: "polygon-ecosystem-token",
+    quoteDecimals: 8,
+    decimals: 18,
+    watcherType: "evm_native",
+    addressSource: "fixed",
+    address: "0xD4DAc67C78f3629B004140562A480C5839C57105",
+    rpcUrl: "https://polygon.drpc.org",
+    confirmations: 8
+  },
+  {
+    id: "monad-sore",
+    brand: "SORE",
+    buttonLabel: "MONAD",
+    paymentTitle: "Monad Payment",
+    network: "Monad",
+    symbol: "MON",
+    coingeckoId: "ethereum",
+    quoteDecimals: 8,
+    decimals: 18,
+    watcherType: "manual",
+    addressSource: "fixed",
+    address: "0xD4DAc67C78f3629B004140562A480C5839C57105"
+  },
+  {
+    id: "sol-sore",
+    brand: "SORE",
+    buttonLabel: "◎ SOL",
+    paymentTitle: "◎ Solana Payment",
+    network: "Solana",
+    symbol: "SOL",
+    coingeckoId: "solana",
+    quoteDecimals: 6,
+    decimals: 9,
+    watcherType: "solana_native",
+    addressSource: "fixed",
+    address: "vyxDFB7Fdj2YHHPtjgrGBUPnEaZgbwEf8rgaYMVHtZN",
+    rpcUrl: "https://api.mainnet-beta.solana.com"
+  },
+  {
+    id: "usdt-erc20-sore",
+    brand: "SORE",
+    buttonLabel: "₮ USDT (ERC-20)",
+    paymentTitle: "₮ USDT Payment",
+    network: "Ethereum ERC-20",
+    symbol: "USDT",
+    coingeckoId: "tether",
+    quoteDecimals: 2,
+    decimals: 6,
+    watcherType: "evm_erc20",
+    addressSource: "fixed",
+    address: "0xD4DAc67C78f3629B004140562A480C5839C57105",
+    rpcUrl: "https://ethereum-rpc.publicnode.com",
+    confirmations: 2,
+    tokenContract: "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+  },
+  {
+    id: "usdc-sol-sore",
+    brand: "SORE",
+    buttonLabel: "$ USDC (SOL)",
+    paymentTitle: "$ USDC Payment",
+    network: "Solana SPL",
+    symbol: "USDC",
+    coingeckoId: "usd-coin",
+    quoteDecimals: 2,
+    decimals: 6,
+    watcherType: "solana_spl",
+    addressSource: "fixed",
+    address: "vyxDFB7Fdj2YHHPtjgrGBUPnEaZgbwEf8rgaYMVHtZN",
+    rpcUrl: "https://api.mainnet-beta.solana.com",
+    tokenMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
   }
 ];
 

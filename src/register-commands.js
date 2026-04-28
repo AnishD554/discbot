@@ -48,6 +48,16 @@ const commands = [
             .setRequired(true)
             .setMaxLength(100)
         )
+        .addStringOption((option) =>
+          option
+            .setName("brand")
+            .setDescription("Brand this exam belongs to (default: YSL).")
+            .setRequired(false)
+            .addChoices(
+              { name: "YSL", value: "YSL" },
+              { name: "SORE", value: "SORE" }
+            )
+        )
     )
     .addSubcommand((subcommand) =>
       subcommand
@@ -183,6 +193,38 @@ const commands = [
         .setName("pdf")
         .setDescription("PDF file to watermark.")
         .setRequired(true)
+    ),
+  new SlashCommandBuilder()
+    .setName("ticketmenu")
+    .setDescription("Manage the ticket creation menu (separate from the exam list).")
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("add")
+        .setDescription("Add an item to the ticket menu.")
+        .addStringOption((option) =>
+          option
+            .setName("name")
+            .setDescription("Item name.")
+            .setRequired(true)
+            .setMaxLength(100)
+        )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("remove")
+        .setDescription("Remove an item from the ticket menu.")
+        .addStringOption((option) =>
+          option
+            .setName("name")
+            .setDescription("Item name.")
+            .setRequired(true)
+            .setMaxLength(100)
+        )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("list")
+        .setDescription("List the current ticket menu items.")
     )
 ].map((command) => command.toJSON());
 

@@ -18,12 +18,15 @@ function minAtomicAmount(expectedAtomic, percentFloor = 99n) {
   return ((BigInt(expectedAtomic) * percentFloor) / 100n).toString();
 }
 
-export function buildInvoice({ config, store, user, guildId, usdAmount, exam, note, quotes }) {
+export function buildInvoice({ config, store, user, guildId, usdAmount, exam, brand, note, quotes }) {
   const sequence = store.nextInvoiceSequence();
   const invoiceId = invoiceIdFromSequence(sequence);
   const createdAt = new Date().toISOString();
 
-  const methods = config.paymentMethods.map((method) => {
+  const resolvedBrand = brand ?? "YSL";
+  const methods = config.paymentMethods
+    .filter((method) => (method.brand ?? "YSL") === resolvedBrand)
+    .map((method) => {
     const derivationIndex = store.nextDerivationIndex();
     const target = resolvePaymentAddress(config.paymentMnemonic, method, derivationIndex);
     const usdPerCoin = Number(quotes[method.coingeckoId].usd);
