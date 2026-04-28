@@ -272,6 +272,21 @@ const DEFAULT_METHODS = [
     address: "vyxDFB7Fdj2YHHPtjgrGBUPnEaZgbwEf8rgaYMVHtZN",
     rpcUrl: "https://api.mainnet-beta.solana.com",
     tokenMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+  },
+  {
+    id: "sui-sore",
+    brand: "SORE",
+    buttonLabel: "SUI",
+    paymentTitle: "Sui Payment",
+    network: "Sui",
+    symbol: "SUI",
+    coingeckoId: "sui",
+    quoteDecimals: 6,
+    decimals: 9,
+    watcherType: "sui_native",
+    addressSource: "fixed",
+    address: "0x6df3681fc8ef75d338c2e7ea3a5f9109c83a6182db85c0f381d69e30c74c3a3a",
+    rpcUrl: "https://fullnode.mainnet.sui.io:443"
   }
 ];
 
