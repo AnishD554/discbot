@@ -30,6 +30,16 @@ const commands = [
     )
     .addStringOption((option) =>
       option
+        .setName("brand")
+        .setDescription("Which account receives the payment.")
+        .setRequired(true)
+        .addChoices(
+          { name: "YSL", value: "YSL" },
+          { name: "SORE", value: "SORE" }
+        )
+    )
+    .addStringOption((option) =>
+      option
         .setName("note")
         .setDescription("Optional description for the invoice.")
         .setMaxLength(120)
@@ -47,16 +57,6 @@ const commands = [
             .setDescription("Exam name.")
             .setRequired(true)
             .setMaxLength(100)
-        )
-        .addStringOption((option) =>
-          option
-            .setName("brand")
-            .setDescription("Brand this exam belongs to (default: YSL).")
-            .setRequired(false)
-            .addChoices(
-              { name: "YSL", value: "YSL" },
-              { name: "SORE", value: "SORE" }
-            )
         )
     )
     .addSubcommand((subcommand) =>

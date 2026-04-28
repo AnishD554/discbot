@@ -117,7 +117,7 @@ function updatePendingQuote(method, methodConfig, usdAmount, quotes) {
 async function createInvoiceForInteraction(interaction) {
   const quotes = await fetchUsdQuotes(config);
   const exam = interaction.options.getString("exam", true);
-  const brand = store.getExamBrand(exam);
+  const brand = interaction.options.getString("brand") ?? "YSL";
   const customer = interaction.options.getUser("customer", true);
   const invoice = buildInvoice({
     config,
@@ -539,10 +539,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
         if (subcommand === "add") {
           const name = interaction.options.getString("name", true);
-          const brand = interaction.options.getString("brand") ?? "YSL";
-          const added = store.addExam(name, brand);
+          const added = store.addExam(name);
           await interaction.reply({
-            content: added ? `Added exam: ${name} (${brand})` : "That exam already exists or was invalid.",
+            content: added ? `Added exam: ${name}` : "That exam already exists or was invalid.",
             ephemeral: true
           });
           return;
@@ -559,11 +558,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
         }
 
         if (subcommand === "list") {
-          const exams = store.getExamsWithBrand();
+          const exams = store.getExams();
           await interaction.reply({
-            content: exams.length > 0
-              ? exams.map((e) => `${e.name} [${e.brand}]`).join("\n")
-              : "No exams configured yet.",
+            content: exams.length > 0 ? exams.join("\n") : "No exams configured yet.",
             ephemeral: true
           });
           return;
